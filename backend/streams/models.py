@@ -20,5 +20,8 @@ class Stream(models.Model):
     # Thumbnail da Live
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
 
+    # Video url
+    video_url = models.URLField(max_length=500, blank=True, null=True)
+
     def __str__(self):
         return f"{self.title} - {self.streamer.username}"
