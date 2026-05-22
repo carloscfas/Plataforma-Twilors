@@ -21,7 +21,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     #Rotas de Autenticação
-    #path('api/accounts/', include('accounts.urls')),
+    path('api/accounts/', include('accounts.urls')),
 
     # Rotas de Streams
     path('api/', include('streams.urls')),
