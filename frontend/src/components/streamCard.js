@@ -33,7 +33,7 @@ const StreamCard = ({ stream }) => {
                         {stream.streamer_username?.charAt(0)}
                     </span>
                 </div>
-                
+
                 <div className="overflow-hidden">
                     <h3 className="font-bold text-gray-900 truncate" title={stream.title}>
                         {stream.title}

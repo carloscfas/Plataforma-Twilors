@@ -67,12 +67,15 @@ const Register = () => {
 
                 <div className="flex items-center mb-6">
                     <input
+                        id="is_streamer_checkbox"
                         name="is_streamer"
                         type="checkbox"
-                        className="mr-2"
+                        className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         onChange={handleChange}
                     />
-                    <label>Quero ser um Streamer</label>
+                    <label htmlFor="is_streamer_checkbox" className="text-sm text-gray-700 cursor-pointer select-none">
+                        Quero ser um Streamer
+                    </label>
                 </div>
 
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
