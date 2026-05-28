@@ -1,9 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 
-// Por enquanto, como não criamos as páginas,
-// vamos criar componentes temporários só para o app não quebrar.
-const Login = () => <h2>Página de Login</h2>
 const Home = () => <h2>Home - Lista de Streams</h2>
 
 function App() {
@@ -15,7 +13,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
             </Routes>
         </BrowserRouter>
-        );
-        }
+    );
+}
 
-        export default App;
+export default App;

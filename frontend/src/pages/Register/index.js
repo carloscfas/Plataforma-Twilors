@@ -78,6 +78,11 @@ const Register = () => {
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
                     Cadastrar
                 </button>
+
+                <p className="mt-4 text-center text-sm text-gray-600">
+                    Já tem uma conta? <a href="/login" className="text-blue-600 hover:underline">Login</a>
+                </p>
+
             </form>
         </div>
     );
