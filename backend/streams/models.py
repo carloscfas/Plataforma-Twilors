@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
-
-
+from django.utils.text import slugify
+import uuid
 
 class Stream(models.Model):
     # Quem está Transmitindo? (FK para o nosso User customizado)
@@ -22,6 +22,13 @@ class Stream(models.Model):
 
     # Video url
     video_url = models.URLField(max_length=500, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Geramos um slug a partir do título + um pequeno ID único para evitar duplicatas
+            base_slug = slugify(self.title)
+            self.slug = f"{base_slug}-{str(uuid.uuid4())[:8]}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.title} - {self.streamer.username}"
