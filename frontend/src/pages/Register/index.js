@@ -36,14 +36,14 @@ const Register = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
             <form onSubmit={handleSubmit} className="p-8 bg-white shadow-md rounded-lg w-96">
                 <h2 className="text-2xl font-bold mb-6 text-center">Criar Conta</h2>
 
                 <input
                     name="username"
                     placeholder="Usuário"
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={handleChange}
                     required
                 />
@@ -52,7 +52,7 @@ const Register = () => {
                     name="email"
                     type="email"
                     placeholder="E-mail"
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={handleChange}
                 />
 
@@ -60,7 +60,7 @@ const Register = () => {
                     name="password"
                     type="password"
                     placeholder="Senha"
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={handleChange}
                     required
                 />

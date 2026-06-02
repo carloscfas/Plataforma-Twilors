@@ -46,9 +46,9 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-6 py-10">
             <h1 className="text-3xl font-bold mb-6">Painel do Streamer</h1>
-            <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl">
+            <div className="bg-blue-50 p-6 rounded-lg shadow-md max-w-2xl">
                 <h2 className="text-xl font-semibold mb-4">Configurar Nova Live</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -71,7 +71,7 @@ const Dashboard = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2 font-medium">URL do Vídeo (Youtube/Twitch Link)</label>
+                        <label className="block text-gray-700 mb-2 font-medium">URL do Vídeo (Twitch Link)</label>
                         <input 
                             name="video_url" 
                             className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none" 

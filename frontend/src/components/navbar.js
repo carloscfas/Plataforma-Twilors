@@ -13,7 +13,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
+        <nav className="bg-white shadow-[0_8px_30px_rgba(0,0,0,0.2)] py-4 px-8 flex justify-between items-center border-b border-gray-300">
             <Link to="/" className="text-2xl font-bold text-blue-600">Twilors</Link>
             
             <div className="flex gap-4 items-center">
