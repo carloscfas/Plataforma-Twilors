@@ -10,6 +10,6 @@ class StreamViewSet(viewsets.ModelViewSet):
     queryset = Stream.objects.all()
     serializer_class = StreamSerializer
     permission_classes = [IsStreamerOrReadOnly]
-
+    lookup_field = 'slug'
     def perform_create(self, serializer):
         serializer.save(streamer=self.request.user)
