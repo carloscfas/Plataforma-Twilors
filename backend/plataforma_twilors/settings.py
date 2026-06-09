@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
+    'channels',
     'accounts',
     'streams',
 ]
@@ -142,3 +144,17 @@ REST_FRAMEWORK = {
 
 # Registre app accounts
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# Definir o arquivo ASGI
+ASGI_APPLICATION = 'plataforma_twilors.asgi.application'
+
+# Configuração do Channel Layer para usar Redis
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}

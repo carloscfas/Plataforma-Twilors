@@ -32,3 +32,13 @@ class Stream(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.streamer.username}"
+
+
+class ChatMessage(models.Model):
+    stream = models.ForeignKey(Stream, on_delete=models.CASCADE, related_name='messages')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.content[:20]}"
