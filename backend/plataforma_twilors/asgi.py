@@ -13,12 +13,13 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import streams.routing
+from plataforma_twilors.middleware import JWTAuthMiddleware
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'plataforma_twilors.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
+    "websocket": JWTAuthMiddleware(
         URLRouter(
             streams.routing.websocket_urlpatterns
         )
