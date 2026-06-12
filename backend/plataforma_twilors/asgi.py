@@ -17,7 +17,7 @@ import streams.routing
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'plataforma_twilors.settings')
 
 application = ProtocolTypeRouter({
-    "https": get_asgi_application(),
+    "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(
             streams.routing.websocket_urlpatterns
