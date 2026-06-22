@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
+import SocialLoginButtons from '../../components/SocialLoginButtons';
+import socialAuthService from '../../services/socialAuthService';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -36,6 +38,30 @@ const Login = () => {
         }
     };
 
+    const handleGoogleLogin = async () => {
+        try {
+            await socialAuthService.initiateGoogleLogin();
+        } catch (error) {
+            alert('Erro ao iniciar login com Google');
+        }
+    };
+
+    const handleFacebookLogin = async () => {
+        try {
+            await socialAuthService.initiateFacebookLogin();
+        } catch (error) {
+            alert('Erro ao iniciar login com Facebook');
+        }
+    };
+
+    const handleAppleLogin = async () => {
+        try {
+            await socialAuthService.initiateAppleLogin();
+        } catch (error) {
+            alert('Erro ao iniciar login com Apple');
+        }
+    };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
             <form onSubmit={handleSubmit} className="p-8 bg-white shadow-md rounded-lg w-96">
@@ -67,6 +93,18 @@ const Login = () => {
                 <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-200">
                     Entrar
                 </button>
+
+                <div className="my-6 flex items-center">
+                    <div className="flex-grow border-t border-gray-300"></div>
+                    <span className="px-3 text-sm text-gray-600">Ou continue com</span>
+                    <div className="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                <SocialLoginButtons
+                    onGoogleClick={handleGoogleLogin}
+                    onFacebookClick={handleFacebookLogin}
+                    onAppleClick={handleAppleLogin}
+                />
                 
                 <p className="mt-4 text-center text-sm text-gray-600">
                     Não tem conta? <a href="/register" className="text-blue-600 hover:underline">Cadastre-se</a>
