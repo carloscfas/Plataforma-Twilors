@@ -145,6 +145,25 @@ REST_FRAMEWORK = {
 # Registre app accounts
 AUTH_USER_MODEL = 'accounts.User'
 
+# OAuth Configuration
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET', '')
+
+FACEBOOK_APP_ID = os.getenv('FACEBOOK_APP_ID', '')
+FACEBOOK_APP_SECRET = os.getenv('FACEBOOK_APP_SECRET', '')
+
+APPLE_CLIENT_ID = os.getenv('APPLE_CLIENT_ID', '')
+APPLE_TEAM_ID = os.getenv('APPLE_TEAM_ID', '')
+APPLE_KEY_ID = os.getenv('APPLE_KEY_ID', '')
+APPLE_PRIVATE_KEY = os.getenv('APPLE_PRIVATE_KEY', '')
+
+# JWT Configuration
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': __import__('datetime').timedelta(minutes=int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', '60'))),
+    'REFRESH_TOKEN_LIFETIME': __import__('datetime').timedelta(days=int(os.getenv('REFRESH_TOKEN_EXPIRE_DAYS', '7'))),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
 
 # Definir o arquivo ASGI
 ASGI_APPLICATION = 'plataforma_twilors.asgi.application'
