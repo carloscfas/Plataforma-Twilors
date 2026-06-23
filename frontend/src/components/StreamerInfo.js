@@ -1,53 +1,68 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const StreamerInfo = ({ streamer }) => {
+const StreamerInfo = ({ streamer, isOwnProfile }) => {
     if (!streamer) return null;
+
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     return (
         <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-            <div className="flex items-center gap-8">
-                {/* Avatar */}
-                <div className="flex-shrink-0">
-                    {streamer.avatar ? (
-                        <img
-                            src={streamer.avatar}
-                            alt={streamer.username}
-                            className="w-32 h-32 rounded-full object-cover border-4 border-purple-500"
-                        />
-                    ) : (
-                        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
-                            {streamer.username?.charAt(0).toUpperCase()}
-                        </div>
-                    )}
-                </div>
-
-                {/* Info */}
-                <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-4xl font-bold text-gray-900">
-                            {streamer.first_name && streamer.last_name
-                                ? `${streamer.first_name} ${streamer.last_name}`
-                                : streamer.username}
-                        </h1>
-                        {streamer.is_streamer && (
-                            <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                Streamer
-                            </span>
+            <div className="flex items-center gap-8 justify-between">
+                <div className="flex items-center gap-8">
+                    {/* Avatar */}
+                    <div className="flex-shrink-0">
+                        {streamer.avatar ? (
+                            <img
+                                src={streamer.avatar}
+                                alt={streamer.username}
+                                className="w-32 h-32 rounded-full object-cover border-4 border-purple-500"
+                            />
+                        ) : (
+                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
+                                {streamer.username?.charAt(0).toUpperCase()}
+                            </div>
                         )}
                     </div>
 
-                    <p className="text-gray-600 text-lg mb-2">@{streamer.username}</p>
+                    {/* Info */}
+                    <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                            <h1 className="text-4xl font-bold text-gray-900">
+                                {streamer.first_name && streamer.last_name
+                                    ? `${streamer.first_name} ${streamer.last_name}`
+                                    : streamer.username}
+                            </h1>
+                            {streamer.is_streamer && (
+                                <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    Streamer
+                                </span>
+                            )}
+                        </div>
 
-                    {streamer.bio && (
-                        <p className="text-gray-700 text-base max-w-2xl mb-4">
-                            {streamer.bio}
+                        <p className="text-gray-600 text-lg mb-2">@{streamer.username}</p>
+
+                        {streamer.bio && (
+                            <p className="text-gray-700 text-base max-w-2xl mb-4">
+                                {streamer.bio}
+                            </p>
+                        )}
+
+                        <p className="text-gray-500 text-sm">
+                            Email: {streamer.email}
                         </p>
-                    )}
-
-                    <p className="text-gray-500 text-sm">
-                        Email: {streamer.email}
-                    </p>
+                    </div>
                 </div>
+
+                {/* Edit Button */}
+                {isOwnProfile && user.is_streamer && (
+                    <Link
+                        to="/edit-profile"
+                        className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition whitespace-nowrap"
+                    >
+                        ✎ Editar Perfil
+                    </Link>
+                )}
             </div>
 
             {/* Social Accounts */}

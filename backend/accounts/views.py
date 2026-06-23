@@ -117,11 +117,31 @@ def social_login(request):
 
 class UserProfileView(APIView):
     """
-    Endpoint para obter o perfil do usuário autenticado
+    Endpoint para obter e atualizar o perfil do usuário autenticado
     GET /api/accounts/profile/
+    PUT /api/accounts/profile/
     """
     permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
         serializer = UserDetailSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        """Atualiza o perfil do usuário autenticado"""
+        user = request.user
+        
+        # Campos que podem ser atualizados
+        allowed_fields = ['first_name', 'last_name', 'bio']
+        
+        for field in allowed_fields:
+            if field in request.data:
+                setattr(user, field, request.data[field])
+        
+        # Tratar avatar separadamente (arquivo)
+        if 'avatar' in request.FILES:
+            user.avatar = request.FILES['avatar']
+        
+        user.save()
+        serializer = UserDetailSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

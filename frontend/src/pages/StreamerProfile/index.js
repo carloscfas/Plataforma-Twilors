@@ -6,6 +6,9 @@ import StreamerStreams from '../../components/StreamerStreams';
 
 const StreamerProfile = () => {
     const { username } = useParams();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const isOwnProfile = user.username === username;
+
     const [streamer, setStreamer] = useState(null);
     const [streams, setStreams] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -75,7 +78,12 @@ const StreamerProfile = () => {
 
                 {/* Perfil do Streamer */}
                 <div className="mb-12 -mt-20">
-                    {streamer && <StreamerInfo streamer={streamer} />}
+                    {streamer && (
+                        <StreamerInfo 
+                            streamer={streamer}
+                            isOwnProfile={isOwnProfile}
+                        />
+                    )}
                 </div>
 
                 {/* Streams */}
