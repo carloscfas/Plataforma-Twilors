@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from .serializers import UserSerializer, SocialLoginSerializer, SocialLoginResponseSerializer, UserDetailSerializer
-from .models import User
+from .models import User, Follow
 from .oauth_services import GoogleOAuthService, FacebookOAuthService, AppleOAuthService
 from django.http import Http404
 
@@ -145,3 +145,91 @@ class UserProfileView(APIView):
         user.save()
         serializer = UserDetailSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FollowStreamerView(APIView):
+    """
+    Endpoint para seguir/deixar de seguir um streamer
+    POST /api/accounts/streamer/<username>/follow/
+    DELETE /api/accounts/streamer/<username>/follow/
+    GET /api/accounts/streamer/<username>/follow/ - verifica se já segue
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, username):
+        """Verifica se o usuário segue o streamer"""
+        try:
+            streamer = User.objects.get(username=username, is_streamer=True)
+            is_following = Follow.objects.filter(
+                follower=request.user,
+                streamer=streamer
+            ).exists()
+            
+            return Response({
+                'is_following': is_following,
+                'followers_count': streamer.followers.count()
+            }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Streamer não encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+    def post(self, request, username):
+        """Seguir um streamer"""
+        try:
+            streamer = User.objects.get(username=username, is_streamer=True)
+            
+            if streamer == request.user:
+                return Response(
+                    {'error': 'Você não pode seguir a si mesmo'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            follow, created = Follow.objects.get_or_create(
+                follower=request.user,
+                streamer=streamer
+            )
+            
+            if created:
+                return Response({
+                    'message': 'Você está seguindo este streamer',
+                    'followers_count': streamer.followers.count()
+                }, status=status.HTTP_201_CREATED)
+            else:
+                return Response({
+                    'message': 'Você já segue este streamer',
+                    'followers_count': streamer.followers.count()
+                }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Streamer não encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+    def delete(self, request, username):
+        """Deixar de seguir um streamer"""
+        try:
+            streamer = User.objects.get(username=username, is_streamer=True)
+            
+            follow = Follow.objects.filter(
+                follower=request.user,
+                streamer=streamer
+            ).first()
+            
+            if follow:
+                follow.delete()
+                return Response({
+                    'message': 'Você deixou de seguir este streamer',
+                    'followers_count': streamer.followers.count()
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    'message': 'Você não estava seguindo este streamer',
+                    'followers_count': streamer.followers.count()
+                }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Streamer não encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import FollowButton from './FollowButton';
 
 const StreamerInfo = ({ streamer, isOwnProfile }) => {
     if (!streamer) return null;
@@ -9,7 +10,7 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
     return (
         <div className="bg-white rounded-lg shadow-md p-8 mb-8">
             <div className="flex items-center gap-8 justify-between">
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-8 flex-1">
                     {/* Avatar */}
                     <div className="flex-shrink-0">
                         {streamer.avatar ? (
@@ -54,15 +55,20 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                     </div>
                 </div>
 
-                {/* Edit Button */}
-                {isOwnProfile && user.is_streamer && (
-                    <Link
-                        to="/edit-profile"
-                        className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition whitespace-nowrap"
-                    >
-                        ✎ Editar Perfil
-                    </Link>
-                )}
+                {/* Actions */}
+                <div className="flex flex-col gap-4">
+                    {isOwnProfile && user.is_streamer && (
+                        <Link
+                            to="/edit-profile"
+                            className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition whitespace-nowrap text-center"
+                        >
+                            ✎ Editar Perfil
+                        </Link>
+                    )}
+                    {!isOwnProfile && (
+                        <FollowButton username={streamer.username} />
+                    )}
+                </div>
             </div>
 
             {/* Social Accounts */}

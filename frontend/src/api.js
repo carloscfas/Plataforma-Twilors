@@ -27,4 +27,17 @@ export const getUserProfile = () => {
     return api.get(`accounts/profile/`);
 };
 
+// Funções de Follow
+export const checkFollowStatus = (username) => {
+    return api.get(`accounts/streamer/${username}/follow/`);
+};
+
+export const followStreamer = (username) => {
+    return api.post(`accounts/streamer/${username}/follow/`);
+};
+
+export const unfollowStreamer = (username) => {
+    return api.delete(`accounts/streamer/${username}/follow/`);
+};
+
 export default api;
