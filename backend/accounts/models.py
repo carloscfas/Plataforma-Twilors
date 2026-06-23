@@ -33,3 +33,16 @@ class SocialAccount(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.provider}"
+
+
+class Follow(models.Model):
+    """Modelo para seguir/deixar de seguir streamers"""
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    streamer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('follower', 'streamer')
+    
+    def __str__(self):
+        return f"{self.follower.username} segue {self.streamer.username}"

@@ -13,4 +13,31 @@ api.interceptors.request.use((config) => {
     return config
 });
 
+// Funções de Streamer
+export const getStreamerProfile = (username) => {
+    return api.get(`accounts/streamer/${username}/`);
+};
+
+export const getStreamerStreams = (username) => {
+    return api.get(`streams/by_streamer/?username=${username}`);
+};
+
+// Funções de Usuário
+export const getUserProfile = () => {
+    return api.get(`accounts/profile/`);
+};
+
+// Funções de Follow
+export const checkFollowStatus = (username) => {
+    return api.get(`accounts/streamer/${username}/follow/`);
+};
+
+export const followStreamer = (username) => {
+    return api.post(`accounts/streamer/${username}/follow/`);
+};
+
+export const unfollowStreamer = (username) => {
+    return api.delete(`accounts/streamer/${username}/follow/`);
+};
+
 export default api;

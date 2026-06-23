@@ -5,10 +5,12 @@ import { useNavigate, Link } from 'react-router-dom';
 const Navbar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('access_token');
+    const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
         navigate('/login');
     };
 
@@ -21,6 +23,14 @@ const Navbar = () => {
                     <>
                         <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium">Explorar</Link>
                         <Link to="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium">Criar Live</Link>
+                        {user?.is_streamer && (
+                            <Link 
+                                to={`/streamer/${user.username}`}
+                                className="text-gray-700 hover:text-blue-600 font-medium flex items-center gap-1"
+                            >
+                                <span>👤</span> Meu Perfil
+                            </Link>
+                        )}
                         <button 
                             onClick={handleLogout}
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
