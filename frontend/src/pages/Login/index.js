@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api';
+import api, { getUserProfile } from '../../api';
 import SocialLoginButtons from '../../components/SocialLoginButtons';
 import socialAuthService from '../../services/socialAuthService';
 
@@ -29,6 +29,10 @@ const Login = () => {
             // Salvamos os tokens para uso posterior pelo interceptor no api.js
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
+
+            // Busca os dados do usuário
+            const userRes = await getUserProfile();
+            localStorage.setItem('user', JSON.stringify(userRes.data));
 
             alert('Login realizado com sucesso!');
             navigate('/'); // Vai para a Home

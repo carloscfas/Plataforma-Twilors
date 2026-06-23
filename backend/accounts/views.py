@@ -113,3 +113,15 @@ def social_login(request):
             {'error': str(e)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+class UserProfileView(APIView):
+    """
+    Endpoint para obter o perfil do usuário autenticado
+    GET /api/accounts/profile/
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        serializer = UserDetailSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)

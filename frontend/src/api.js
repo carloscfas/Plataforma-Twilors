@@ -13,4 +13,18 @@ api.interceptors.request.use((config) => {
     return config
 });
 
+// Funções de Streamer
+export const getStreamerProfile = (username) => {
+    return api.get(`accounts/streamer/${username}/`);
+};
+
+export const getStreamerStreams = (username) => {
+    return api.get(`streams/by_streamer/?username=${username}`);
+};
+
+// Funções de Usuário
+export const getUserProfile = () => {
+    return api.get(`accounts/profile/`);
+};
+
 export default api;
