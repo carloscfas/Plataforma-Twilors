@@ -3,9 +3,11 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
 from .serializers import UserSerializer, SocialLoginSerializer, SocialLoginResponseSerializer, UserDetailSerializer
 from .models import User
 from .oauth_services import GoogleOAuthService, FacebookOAuthService, AppleOAuthService
+from django.http import Http404
 
 # Create your views here.
 
@@ -13,6 +15,25 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.AllowAny,)
+
+
+class StreamerProfileView(APIView):
+    """
+    Endpoint para obter perfil de um streamer específico por username
+    GET /api/accounts/streamer/<username>/
+    """
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username, is_streamer=True)
+            serializer = UserDetailSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Streamer não encontrado'},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
 
 @api_view(['POST'])
