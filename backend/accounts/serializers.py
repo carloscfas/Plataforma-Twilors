@@ -34,7 +34,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'avatar', 'is_streamer', 'bio', 'social_accounts')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'avatar', 'banner', 'is_streamer', 'bio', 'social_accounts')
 
 
 class SocialLoginSerializer(serializers.Serializer):

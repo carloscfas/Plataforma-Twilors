@@ -138,9 +138,11 @@ class UserProfileView(APIView):
             if field in request.data:
                 setattr(user, field, request.data[field])
         
-        # Tratar avatar separadamente (arquivo)
+        # Tratar avatar e banner separadamente (arquivo)
         if 'avatar' in request.FILES:
             user.avatar = request.FILES['avatar']
+        if 'banner' in request.FILES:
+            user.banner = request.FILES['banner']
         
         user.save()
         serializer = UserDetailSerializer(user)
