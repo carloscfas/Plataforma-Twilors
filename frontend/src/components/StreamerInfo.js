@@ -8,16 +8,30 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-            <div className="flex items-center gap-8 justify-between">
-                <div className="flex items-center gap-8 flex-1">
-                    {/* Avatar */}
-                    <div className="flex-shrink-0">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+            <div className="relative h-44 w-full bg-gray-100">
+                {streamer.banner ? (
+                    <img
+                        src={streamer.banner}
+                        alt="Banner do streamer"
+                        className="w-full h-full object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white text-lg font-semibold">
+                        Banner padrão do streamer
+                    </div>
+                )}
+            </div>
+            <div className="p-8">
+                <div className="flex items-center gap-8 justify-between">
+                    <div className="flex items-center gap-8 flex-1">
+                        {/* Avatar */}
+                        <div className="flex-shrink-0 -mt-16">
                         {streamer.avatar ? (
                             <img
                                 src={streamer.avatar}
                                 alt={streamer.username}
-                                className="w-32 h-32 rounded-full object-cover border-4 border-purple-500"
+                                className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-lg"
                             />
                         ) : (
                             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">

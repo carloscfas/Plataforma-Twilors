@@ -12,7 +12,9 @@ const EditProfile = () => {
         bio: '',
     });
     const [avatar, setAvatar] = useState(null);
+    const [banner, setBanner] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState(null);
+    const [bannerPreview, setBannerPreview] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
@@ -29,6 +31,9 @@ const EditProfile = () => {
                 });
                 if (res.data.avatar) {
                     setAvatarPreview(res.data.avatar);
+                }
+                if (res.data.banner) {
+                    setBannerPreview(res.data.banner);
                 }
             } catch (err) {
                 console.error('Erro ao carregar dados:', err);
@@ -61,6 +66,18 @@ const EditProfile = () => {
         }
     };
 
+    const handleBannerChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setBanner(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setBannerPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
@@ -75,6 +92,9 @@ const EditProfile = () => {
             
             if (avatar) {
                 data.append('avatar', avatar);
+            }
+            if (banner) {
+                data.append('banner', banner);
             }
 
             const res = await api.put('accounts/profile/', data, {
@@ -127,6 +147,35 @@ const EditProfile = () => {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Banner */}
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-4">
+                                Banner
+                            </label>
+                            <div className="mb-4">
+                                {bannerPreview ? (
+                                    <img
+                                        src={bannerPreview}
+                                        alt="Banner Preview"
+                                        className="w-full h-40 rounded-xl object-cover border border-gray-200"
+                                    />
+                                ) : (
+                                    <div className="w-full h-40 rounded-xl bg-gradient-to-r from-purple-200 via-pink-200 to-indigo-200 flex items-center justify-center text-gray-500 text-sm uppercase tracking-wide">
+                                        Nenhum banner definido
+                                    </div>
+                                )}
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleBannerChange}
+                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                            />
+                            <p className="text-xs text-gray-500 mt-2">
+                                Formatos aceitos: JPG, PNG, GIF (máx. 5MB)
+                            </p>
+                        </div>
+
                         {/* Avatar */}
                         <div>
                             <label className="block text-sm font-bold text-gray-700 mb-4">
