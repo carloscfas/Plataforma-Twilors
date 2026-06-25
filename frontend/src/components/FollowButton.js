@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { checkFollowStatus, followStreamer, unfollowStreamer } from '../../api';
+import { checkFollowStatus, followStreamer, unfollowStreamer } from '../api';
 
 const FollowButton = ({ username }) => {
     const [isFollowing, setIsFollowing] = useState(false);

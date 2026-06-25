@@ -27,7 +27,7 @@ class StreamerProfileView(APIView):
     def get(self, request, username):
         try:
             user = User.objects.get(username=username, is_streamer=True)
-            serializer = UserDetailSerializer(user)
+            serializer = UserDetailSerializer(user, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(
@@ -102,7 +102,7 @@ def social_login(request):
         response_data = {
             'access': str(refresh.access_token),
             'refresh': str(refresh),
-            'user': UserDetailSerializer(user).data,
+            'user': UserDetailSerializer(user, context={'request': request}).data,
             'is_new': is_new
         }
         
@@ -124,7 +124,7 @@ class UserProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
-        serializer = UserDetailSerializer(request.user)
+        serializer = UserDetailSerializer(request.user, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request):
@@ -145,7 +145,7 @@ class UserProfileView(APIView):
             user.banner = request.FILES['banner']
         
         user.save()
-        serializer = UserDetailSerializer(user)
+        serializer = UserDetailSerializer(user, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
