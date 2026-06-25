@@ -6,6 +6,7 @@ class User(AbstractUser):
     is_streamer = models.BooleanField(default=False)
     bio = models.TextField(max_length=500, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    banner = models.ImageField(upload_to='banners/', null=True, blank=True)
 
 
 class SocialAccount(models.Model):
