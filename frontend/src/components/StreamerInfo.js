@@ -84,6 +84,7 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                     )}
                 </div>
             </div>
+            </div>
 
             {/* Social Accounts */}
             {streamer.social_accounts && streamer.social_accounts.length > 0 && (
