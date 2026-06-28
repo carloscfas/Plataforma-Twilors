@@ -27,64 +27,70 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                     <div className="flex items-center gap-8 flex-1">
                         {/* Avatar */}
                         <div className="flex-shrink-0 -mt-16">
-                        {streamer.avatar ? (
-                            <img
-                                src={streamer.avatar}
-                                alt={streamer.username}
-                                className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-lg"
-                            />
-                        ) : (
-                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
-                                {streamer.username?.charAt(0).toUpperCase()}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                            <h1 className="text-4xl font-bold text-gray-900">
-                                {streamer.first_name && streamer.last_name
-                                    ? `${streamer.first_name} ${streamer.last_name}`
-                                    : streamer.username}
-                            </h1>
-                            {streamer.is_streamer && (
-                                <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                    Streamer
-                                </span>
+                            {streamer.avatar ? (
+                                <img
+                                    src={streamer.avatar}
+                                    alt={streamer.username}
+                                    className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-lg"
+                                />
+                            ) : (
+                                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
+                                    {streamer.username?.charAt(0).toUpperCase()}
+                                </div>
                             )}
                         </div>
 
-                        <p className="text-gray-600 text-lg mb-2">@{streamer.username}</p>
+                        {/* Info */}
+                        <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                                <h1 className="text-4xl font-bold text-gray-900">
+                                    {streamer.first_name && streamer.last_name
+                                        ? `${streamer.first_name} ${streamer.last_name}`
+                                        : streamer.username}
+                                </h1>
+                                {streamer.is_streamer && (
+                                    <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                        Streamer
+                                    </span>
+                                )}
+                            </div>
 
-                        {streamer.bio && (
-                            <p className="text-gray-700 text-base max-w-2xl mb-4">
-                                {streamer.bio}
+                            <p className="text-gray-600 text-lg mb-2">@{streamer.username}</p>
+
+                            <p className="text-gray-500 text-sm">
+                                Email: {streamer.email}
                             </p>
-                        )}
+                        </div>
+                    </div>
 
-                        <p className="text-gray-500 text-sm">
-                            Email: {streamer.email}
-                        </p>
+                    {/* Actions */}
+                    <div className="flex flex-col gap-4">
+                        {isOwnProfile && user.is_streamer && (
+                            <Link
+                                to="/edit-profile"
+                                className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition whitespace-nowrap text-center"
+                            >
+                                ✎ Editar Perfil
+                            </Link>
+                        )}
+                        {!isOwnProfile && (
+                            <FollowButton username={streamer.username} />
+                        )}
                     </div>
                 </div>
+            </div>
 
-                {/* Actions */}
-                <div className="flex flex-col gap-4">
-                    {isOwnProfile && user.is_streamer && (
-                        <Link
-                            to="/edit-profile"
-                            className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition whitespace-nowrap text-center"
-                        >
-                            ✎ Editar Perfil
-                        </Link>
-                    )}
-                    {!isOwnProfile && (
-                        <FollowButton username={streamer.username} />
-                    )}
+            {/* Bio */}
+            {streamer.bio && (
+                <div className="mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                        Sobre mim
+                    </h3>
+                    <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+                        {streamer.bio}
+                    </p>
                 </div>
-            </div>
-            </div>
+            )}
 
             {/* Social Accounts */}
             {streamer.social_accounts && streamer.social_accounts.length > 0 && (
