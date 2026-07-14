@@ -45,3 +45,46 @@ class StreamViewSet(viewsets.ModelViewSet):
                 {'error': 'Streamer não encontrado'},
                 status=status.HTTP_404_NOT_FOUND
             )
+    
+    @action(detail=False, methods=['GET'], permission_classes=[permissions.AllowAny])
+    def search(self, request):
+        """
+        Pesquisa streams por título e streamers por username
+        GET /api/streams/search/?q=<termo>
+        """
+        query = request.query_params.get('q', '')
+        
+        if not query:
+            return Response(
+                {'error': 'Termo de pesquisa é requerido'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Pesquisar streams por título
+        streams = Stream.objects.filter(
+            title__icontains=query
+        ).select_related('streamer').order_by('-created_at')
+        
+        # Pesquisar streamers por username
+        streamers = User.objects.filter(
+            username__icontains=query,
+            is_streamer=True
+        )
+        
+        # Serializar resultados
+        stream_serializer = self.get_serializer(streams, many=True)
+        
+        streamers_data = []
+        for streamer in streamers:
+            streamers_data.append({
+                'id': streamer.id,
+                'username': streamer.username,
+                'bio': streamer.bio,
+                'avatar': streamer.avatar.url if streamer.avatar else None,
+                'is_streamer': streamer.is_streamer
+            })
+        
+        return Response({
+            'streams': stream_serializer.data,
+            'streamers': streamers_data
+        }, status=status.HTTP_200_OK)

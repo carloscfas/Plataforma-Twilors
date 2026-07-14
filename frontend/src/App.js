@@ -7,6 +7,7 @@ import Navbar from "./components/navbar";
 import Live from "./pages/Live";
 import StreamerProfile from "./pages/StreamerProfile";
 import EditProfile from "./pages/EditProfile";
+import Search from "./pages/Search";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/live/:slug" element={<Live />} />
                     <Route path="/streamer/:username" element={<StreamerProfile />} />
                     <Route path="/edit-profile" element={<EditProfile />} />
+                    <Route path="/search" element={<Search />} />
                 </Routes>
             </div>
         </BrowserRouter>
