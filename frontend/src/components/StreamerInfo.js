@@ -21,24 +21,24 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                         Banner padrão do streamer
                     </div>
                 )}
-            </div>
-            <div className="p-8">
-                <div className="flex items-center gap-8 justify-between">
-                    <div className="flex items-center gap-8 flex-1">
-                        {/* Avatar */}
-                        <div className="flex-shrink-0 -mt-16">
-                            {streamer.avatar ? (
-                                <img
-                                    src={streamer.avatar}
-                                    alt={streamer.username}
-                                    className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-lg"
-                                />
-                            ) : (
-                                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
-                                    {streamer.username?.charAt(0).toUpperCase()}
-                                </div>
-                            )}
+                {/* Avatar */}
+                <div className="absolute -bottom-16 left-8">
+                    {streamer.avatar ? (
+                        <img
+                            src={streamer.avatar}
+                            alt={streamer.username}
+                            className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-lg"
+                        />
+                    ) : (
+                        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
+                            {streamer.username?.charAt(0).toUpperCase()}
                         </div>
+                    )}
+                </div>
+            </div>
+            <div className="p-8 pt-20">
+                <div className="flex items-center gap-8 justify-between">
+                    <div className="flex items-center gap-8 flex-1 ml-40">
 
                         {/* Info */}
                         <div className="flex-1">

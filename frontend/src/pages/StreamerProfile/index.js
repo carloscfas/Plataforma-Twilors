@@ -73,11 +73,8 @@ const StreamerProfile = () => {
     return (
         <div className="bg-gray-50 min-h-screen py-8">
             <div className="container mx-auto px-4 max-w-6xl">
-                {/* Header com background */}
-                <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-t-lg h-40 mb-0"></div>
-
                 {/* Perfil do Streamer */}
-                <div className="mb-12 -mt-20">
+                <div className="mb-12">
                     {streamer && (
                         <StreamerInfo 
                             streamer={streamer}
