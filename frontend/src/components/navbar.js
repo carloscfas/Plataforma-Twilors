@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 // Regra para quando a pessoa não tiver token logado
 const Navbar = () => {
     const navigate = useNavigate();
+    const { openLoginModal, openRegisterModal } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
     const token = localStorage.getItem('access_token');
     const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
@@ -12,7 +14,7 @@ const Navbar = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
-        navigate('/login');
+        navigate('/');
     };
 
     const handleSearch = (e) => {
@@ -66,13 +68,18 @@ const Navbar = () => {
                     </>
                 ) : (
                     <>
-                        <Link to="/login" className="text-text-secondary hover:text-accent-primary font-medium transition-colors">Entrar</Link>
-                        <Link 
-                            to="/register" 
+                        <button 
+                            onClick={openLoginModal}
+                            className="text-text-secondary hover:text-accent-primary font-medium transition-colors"
+                        >
+                            Entrar
+                        </button>
+                        <button 
+                            onClick={openRegisterModal}
                             className="bg-accent-primary text-white px-4 py-2 rounded hover:bg-accent-hover transition-colors font-medium"
                         >
                             Cadastrar
-                        </Link>
+                        </button>
                     </>
                 )}
             </div>

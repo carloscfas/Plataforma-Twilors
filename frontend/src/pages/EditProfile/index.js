@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api, { getUserProfile } from '../../api';
+import colors from '../../configs/colors';
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -120,28 +121,28 @@ const EditProfile = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+            <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background.primary }}>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{ borderColor: colors.accent.primary }}></div>
             </div>
         );
     }
 
     return (
-        <div className="bg-gray-50 min-h-screen py-8">
+        <div className="min-h-screen py-8" style={{ backgroundColor: colors.background.primary }}>
             <div className="container mx-auto px-4 max-w-2xl">
-                <div className="bg-white rounded-lg shadow-md p-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-8">
+                <div className="rounded-lg shadow-md p-8" style={{ backgroundColor: colors.background.secondary }}>
+                    <h1 className="text-3xl font-bold mb-8" style={{ color: colors.text.primary }}>
                         Editar Perfil
                     </h1>
 
                     {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+                        <div className="px-4 py-3 rounded mb-6" style={{ backgroundColor: `${colors.status.error}20`, borderColor: colors.status.error, color: colors.status.error }}>
                             {error}
                         </div>
                     )}
 
                     {success && (
-                        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6">
+                        <div className="px-4 py-3 rounded mb-6" style={{ backgroundColor: `${colors.status.success}20`, borderColor: colors.status.success, color: colors.status.success }}>
                             Perfil atualizado com sucesso!
                         </div>
                     )}
@@ -149,7 +150,7 @@ const EditProfile = () => {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Banner */}
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-4">
+                            <label className="block text-sm font-bold mb-4" style={{ color: colors.text.primary }}>
                                 Banner
                             </label>
                             <div className="mb-4">
@@ -157,10 +158,11 @@ const EditProfile = () => {
                                     <img
                                         src={bannerPreview}
                                         alt="Banner Preview"
-                                        className="w-full h-40 rounded-xl object-cover border border-gray-200"
+                                        className="w-full h-40 rounded-xl object-cover border"
+                                        style={{ borderColor: colors.border.primary }}
                                     />
                                 ) : (
-                                    <div className="w-full h-40 rounded-xl bg-gradient-to-r from-purple-200 via-pink-200 to-indigo-200 flex items-center justify-center text-gray-500 text-sm uppercase tracking-wide">
+                                    <div className="w-full h-40 rounded-xl flex items-center justify-center text-sm uppercase tracking-wide" style={{ background: colors.gradient.dark, color: colors.text.muted }}>
                                         Nenhum banner definido
                                     </div>
                                 )}
@@ -169,16 +171,17 @@ const EditProfile = () => {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleBannerChange}
-                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                                className="block w-full text-sm"
+                                style={{ color: colors.text.secondary }}
                             />
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-xs mt-2" style={{ color: colors.text.muted }}>
                                 Formatos aceitos: JPG, PNG, GIF (máx. 5MB)
                             </p>
                         </div>
 
                         {/* Avatar */}
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-4">
+                            <label className="block text-sm font-bold mb-4" style={{ color: colors.text.primary }}>
                                 Avatar
                             </label>
                             <div className="flex items-center gap-6">
@@ -187,10 +190,11 @@ const EditProfile = () => {
                                         <img
                                             src={avatarPreview}
                                             alt="Avatar Preview"
-                                            className="w-24 h-24 rounded-full object-cover border-4 border-purple-500"
+                                            className="w-24 h-24 rounded-full object-cover border-4"
+                                            style={{ borderColor: colors.accent.primary }}
                                         />
                                     ) : (
-                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-3xl font-bold">
+                                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold" style={{ background: colors.gradient.primary, color: colors.text.primary }}>
                                             {user.username?.charAt(0).toUpperCase()}
                                         </div>
                                     )}
@@ -200,9 +204,10 @@ const EditProfile = () => {
                                         type="file"
                                         accept="image/*"
                                         onChange={handleAvatarChange}
-                                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                                        className="block w-full text-sm"
+                                        style={{ color: colors.text.secondary }}
                                     />
-                                    <p className="text-xs text-gray-500 mt-2">
+                                    <p className="text-xs mt-2" style={{ color: colors.text.muted }}>
                                         Formatos aceitos: JPG, PNG, GIF (máx. 5MB)
                                     </p>
                                 </div>
@@ -211,7 +216,7 @@ const EditProfile = () => {
 
                         {/* First Name */}
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">
+                            <label className="block text-sm font-bold mb-2" style={{ color: colors.text.primary }}>
                                 Primeiro Nome
                             </label>
                             <input
@@ -220,13 +225,20 @@ const EditProfile = () => {
                                 value={formData.first_name}
                                 onChange={handleChange}
                                 placeholder="Seu primeiro nome"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                style={{
+                                    backgroundColor: colors.input.background,
+                                    borderColor: colors.input.border,
+                                    color: colors.text.primary,
+                                    '--tw-ring-color': colors.accent.primary,
+                                    '--tw-ring-offset-color': colors.input.background
+                                }}
                             />
                         </div>
 
                         {/* Last Name */}
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">
+                            <label className="block text-sm font-bold mb-2" style={{ color: colors.text.primary }}>
                                 Sobrenome
                             </label>
                             <input
@@ -235,13 +247,20 @@ const EditProfile = () => {
                                 value={formData.last_name}
                                 onChange={handleChange}
                                 placeholder="Seu sobrenome"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                style={{
+                                    backgroundColor: colors.input.background,
+                                    borderColor: colors.input.border,
+                                    color: colors.text.primary,
+                                    '--tw-ring-color': colors.accent.primary,
+                                    '--tw-ring-offset-color': colors.input.background
+                                }}
                             />
                         </div>
 
                         {/* Bio */}
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">
+                            <label className="block text-sm font-bold mb-2" style={{ color: colors.text.primary }}>
                                 Bio
                             </label>
                             <textarea
@@ -251,9 +270,16 @@ const EditProfile = () => {
                                 placeholder="Conte um pouco sobre você..."
                                 maxLength="500"
                                 rows="6"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none transition-all"
+                                style={{
+                                    backgroundColor: colors.input.background,
+                                    borderColor: colors.input.border,
+                                    color: colors.text.primary,
+                                    '--tw-ring-color': colors.accent.primary,
+                                    '--tw-ring-offset-color': colors.input.background
+                                }}
                             />
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-xs mt-2" style={{ color: colors.text.muted }}>
                                 {formData.bio.length}/500 caracteres
                             </p>
                         </div>
@@ -263,14 +289,25 @@ const EditProfile = () => {
                             <button
                                 type="button"
                                 onClick={() => navigate(`/streamer/${user.username}`)}
-                                className="flex-1 px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                                className="flex-1 px-6 py-2 border rounded-lg transition"
+                                style={{
+                                    borderColor: colors.border.primary,
+                                    color: colors.text.primary
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.card.hover}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
                                 Cancelar
                             </button>
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="flex-1 px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition disabled:opacity-50"
+                                className="flex-1 px-6 py-2 text-white rounded-lg transition disabled:opacity-50"
+                                style={{
+                                    backgroundColor: colors.accent.primary
+                                }}
+                                onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = colors.accent.hover)}
+                                onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = colors.accent.primary)}
                             >
                                 {saving ? 'Salvando...' : 'Salvar Alterações'}
                             </button>
