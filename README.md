@@ -58,7 +58,7 @@ A maneira mais rápida e consistente de rodar o projeto é utilizando o Docker C
 ## ✨ Features Implementadas
 
 - [x] **Autenticação JWT:** Login, Registro e persistência de sessão segura.
-- [x] **Perfil de streamer e views:** Gerenciamento de perfil de streamer e espectadore.
+- [x] **Perfil de streamer e viewrs:** Gerenciamento de perfil de streamer e espectadore.
 - [x] **Gestão de Streams:** CRUD completo de lives (título, descrição, thumbnails).
 - [x] **Dashboard do Streamer:** Área exclusiva para criar e gerenciar transmissões.
 - [x] **Player de Vídeo:** Integração robusta com YouTube Iframe API.
