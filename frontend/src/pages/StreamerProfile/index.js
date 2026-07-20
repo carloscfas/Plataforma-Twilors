@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getStreamerProfile, getStreamerStreams } from '../../api';
 import StreamerInfo from '../../components/StreamerInfo';
 import StreamerStreams from '../../components/StreamerStreams';
+import colors from '../../configs/colors';
 
 const StreamerProfile = () => {
     const { username } = useParams();
@@ -45,15 +46,18 @@ const StreamerProfile = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="bg-white rounded-lg shadow-md p-8 text-center max-w-md">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background.primary }}>
+                <div className="rounded-lg shadow-md p-8 text-center max-w-md" style={{ backgroundColor: colors.background.secondary }}>
+                    <h1 className="text-2xl font-bold mb-2" style={{ color: colors.text.primary }}>
                         Erro
                     </h1>
-                    <p className="text-gray-600 mb-6">{error}</p>
+                    <p className="mb-6" style={{ color: colors.text.secondary }}>{error}</p>
                     <a
                         href="/"
-                        className="inline-block bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors"
+                        className="inline-block text-white px-6 py-2 rounded-lg transition-colors"
+                        style={{ backgroundColor: colors.accent.primary }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = colors.accent.hover}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = colors.accent.primary}
                     >
                         Voltar para Home
                     </a>
@@ -64,14 +68,14 @@ const StreamerProfile = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+            <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background.primary }}>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{ borderColor: colors.accent.primary }}></div>
             </div>
         );
     }
 
     return (
-        <div className="bg-gray-50 min-h-screen py-8">
+        <div className="min-h-screen py-8" style={{ backgroundColor: colors.background.primary }}>
             <div className="container mx-auto px-4 max-w-6xl">
                 {/* Perfil do Streamer */}
                 <div className="mb-12">

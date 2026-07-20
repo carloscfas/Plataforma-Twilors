@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import FollowButton from './FollowButton';
+import colors from '../configs/colors';
 
 const StreamerInfo = ({ streamer, isOwnProfile }) => {
     if (!streamer) return null;
@@ -8,8 +9,8 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-            <div className="relative h-44 w-full bg-gray-100">
+        <div className="rounded-lg shadow-md overflow-hidden mb-8" style={{ backgroundColor: colors.background.secondary }}>
+            <div className="relative h-44 w-full" style={{ backgroundColor: colors.background.tertiary }}>
                 {streamer.banner ? (
                     <img
                         src={streamer.banner}
@@ -17,7 +18,7 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                         className="w-full h-full object-cover"
                     />
                 ) : (
-                    <div className="w-full h-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white text-lg font-semibold">
+                    <div className="w-full h-full flex items-center justify-center text-lg font-semibold" style={{ background: colors.gradient.primary, color: colors.text.primary }}>
                         Banner padrão do streamer
                     </div>
                 )}
@@ -27,10 +28,11 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                         <img
                             src={streamer.avatar}
                             alt={streamer.username}
-                            className="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-lg"
+                            className="w-32 h-32 rounded-full object-cover border-4 shadow-lg"
+                            style={{ borderColor: colors.accent.primary }}
                         />
                     ) : (
-                        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-4xl font-bold">
+                        <div className="w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold" style={{ background: colors.gradient.primary, color: colors.text.primary }}>
                             {streamer.username?.charAt(0).toUpperCase()}
                         </div>
                     )}
@@ -43,21 +45,21 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                         {/* Info */}
                         <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
-                                <h1 className="text-4xl font-bold text-gray-900">
+                                <h1 className="text-4xl font-bold" style={{ color: colors.text.primary }}>
                                     {streamer.first_name && streamer.last_name
                                         ? `${streamer.first_name} ${streamer.last_name}`
                                         : streamer.username}
                                 </h1>
                                 {streamer.is_streamer && (
-                                    <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    <span className="text-white px-3 py-1 rounded-full text-sm font-semibold" style={{ backgroundColor: colors.accent.primary }}>
                                         Streamer
                                     </span>
                                 )}
                             </div>
 
-                            <p className="text-gray-600 text-lg mb-2">@{streamer.username}</p>
+                            <p className="text-lg mb-2" style={{ color: colors.text.secondary }}>@{streamer.username}</p>
 
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-sm" style={{ color: colors.text.muted }}>
                                 Email: {streamer.email}
                             </p>
                         </div>
@@ -68,7 +70,10 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
                         {isOwnProfile && user.is_streamer && (
                             <Link
                                 to="/edit-profile"
-                                className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition whitespace-nowrap text-center"
+                                className="text-white px-6 py-3 rounded-lg transition whitespace-nowrap text-center"
+                                style={{ backgroundColor: colors.accent.primary }}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = colors.accent.hover}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = colors.accent.primary}
                             >
                                 ✎ Editar Perfil
                             </Link>
@@ -82,11 +87,11 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
 
             {/* Bio */}
             {streamer.bio && (
-                <div className="mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                <div className="mt-6 p-6 rounded-xl" style={{ backgroundColor: colors.background.tertiary, borderColor: colors.border.primary }}>
+                    <h3 className="text-xl font-semibold mb-3" style={{ color: colors.text.primary }}>
                         Sobre mim
                     </h3>
-                    <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+                    <p className="text-base leading-relaxed whitespace-pre-line" style={{ color: colors.text.secondary }}>
                         {streamer.bio}
                     </p>
                 </div>
@@ -94,17 +99,18 @@ const StreamerInfo = ({ streamer, isOwnProfile }) => {
 
             {/* Social Accounts */}
             {streamer.social_accounts && streamer.social_accounts.length > 0 && (
-                <div className="mt-8 pt-8 border-t border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <div className="mt-8 pt-8 border-t" style={{ borderColor: colors.border.primary }}>
+                    <h3 className="text-lg font-semibold mb-4" style={{ color: colors.text.primary }}>
                         Contas Vinculadas
                     </h3>
                     <div className="flex flex-wrap gap-4">
                         {streamer.social_accounts.map((account) => (
                             <div
                                 key={account.id}
-                                className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg"
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg"
+                                style={{ backgroundColor: colors.background.tertiary }}
                             >
-                                <span className="text-sm font-semibold text-gray-700 capitalize">
+                                <span className="text-sm font-semibold capitalize" style={{ color: colors.text.primary }}>
                                     {account.provider}
                                 </span>
                                 {account.picture_url && (

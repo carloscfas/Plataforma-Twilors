@@ -38,32 +38,41 @@ const Register = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
             <form onSubmit={handleSubmit} className="p-8 bg-white shadow-md rounded-lg w-96">
-                <h2 className="text-2xl font-bold mb-6 text-center">Criar Conta</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">Criar Conta</h2>
 
-                <input
-                    name="username"
-                    placeholder="Usuário"
-                    className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={handleChange}
-                    required
-                />
+                <div className="mb-4">
+                    <label className="block text-gray-800 text-sm font-bold mb-2">Usuário</label>
+                    <input
+                        name="username"
+                        placeholder="Seu usuário"
+                        className="w-full p-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-800"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="E-mail"
-                    className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={handleChange}
-                />
+                <div className="mb-4">
+                    <label className="block text-gray-800 text-sm font-bold mb-2">E-mail</label>
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="Seu e-mail"
+                        className="w-full p-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-800"
+                        onChange={handleChange}
+                    />
+                </div>
 
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Senha"
-                    className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={handleChange}
-                    required
-                />
+                <div className="mb-4">
+                    <label className="block text-gray-800 text-sm font-bold mb-2">Senha</label>
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Sua senha"
+                        className="w-full p-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-800"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
                 <div className="flex items-center mb-6">
                     <input
@@ -78,7 +87,7 @@ const Register = () => {
                     </label>
                 </div>
 
-                <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+                <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-200 font-semibold text-lg shadow-md hover:shadow-lg">
                     Cadastrar
                 </button>
 

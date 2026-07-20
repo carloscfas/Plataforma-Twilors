@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bg-primary text-text-primary;
+  }
+  
+  * {
+    @apply scrollbar-thin scrollbar-thumb-bg-secondary scrollbar-track-bg-primary;
+  }
+}
+
+@layer components {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .scrollbar-thumb-bg-secondary::-webkit-scrollbar-thumb {
+    @apply bg-bg-secondary rounded-full;
+  }
+  
+  .scrollbar-track-bg-primary::-webkit-scrollbar-track {
+    @apply bg-bg-primary;
+  }
+}
