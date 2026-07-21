@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getFollowingList } from '../api';
 import colors from '../configs/colors';
-import toast from 'react-hot-toast';
 
 const FollowingSidebar = () => {
     const [following, setFollowing] = useState([]);
@@ -21,7 +20,7 @@ const FollowingSidebar = () => {
             const response = await getFollowingList();
             setFollowing(response.data);
         } catch (error) {
-            toast.error('Erro ao carregar canais seguidos');
+            console.error('Erro ao carregar canais seguidos:', error);
         } finally {
             setLoading(false);
         }

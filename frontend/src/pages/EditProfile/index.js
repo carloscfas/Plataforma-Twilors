@@ -38,7 +38,7 @@ const EditProfile = () => {
                     setBannerPreview(res.data.banner);
                 }
             } catch (err) {
-                toast.error('Erro ao carregar dados do perfil');
+                console.error('Erro ao carregar dados do perfil:', err);
                 setError('Erro ao carregar perfil');
             } finally {
                 setLoading(false);
