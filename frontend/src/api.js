@@ -44,4 +44,8 @@ export const getFollowingList = () => {
     return api.get(`accounts/following/`);
 };
 
+export const getAllStreamers = () => {
+    return api.get(`accounts/streamers/`);
+};
+
 export default api;

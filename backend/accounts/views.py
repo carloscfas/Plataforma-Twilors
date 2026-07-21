@@ -165,6 +165,21 @@ class FollowingListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class AllStreamersListView(APIView):
+    """
+    Endpoint para listar todos os streamers da plataforma
+    GET /api/accounts/streamers/
+    """
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request):
+        """Lista todos os streamers da plataforma"""
+        streamers = User.objects.filter(is_streamer=True)
+        
+        serializer = UserDetailSerializer(streamers, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class FollowStreamerView(APIView):
     """
     Endpoint para seguir/deixar de seguir um streamer
