@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const RegisterForm = ({ onClose }) => {
     const navigate = useNavigate();
@@ -12,6 +13,8 @@ const RegisterForm = ({ onClose }) => {
         password: '',
         is_streamer: false
     });
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -23,19 +26,33 @@ const RegisterForm = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
             await api.post('accounts/register/', formData);
-            alert('Cadastro realizado com sucesso! Faça login para continuar.');
-            onClose();
+            setSuccess(true);
+            setTimeout(() => {
+                onClose();
+            }, 2000);
         } catch (error) {
-            console.error("Erro ao cadastrar:", error.response?.data);
-            alert('Erro ao realizar cadastro. Verifique os dados.')
+            setError('Erro ao realizar cadastro. Verifique os dados.');
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <h2 className="text-3xl font-bold mb-6 text-center" style={{ color: colors.text.primary }}>Criar Conta</h2>
+
+            {success && (
+                <div className="mb-4 p-3 rounded-lg text-center" style={{ backgroundColor: `${colors.status.success}20`, color: colors.status.success }}>
+                    Cadastro realizado com sucesso! Redirecionando...
+                </div>
+            )}
+
+            {error && (
+                <div className="mb-4 p-3 rounded-lg text-center" style={{ backgroundColor: `${colors.status.error}20`, color: colors.status.error }}>
+                    {error}
+                </div>
+            )}
 
             <div className="mb-4">
                 <label className="block text-sm font-bold mb-2" style={{ color: colors.text.primary }}>Usuário</label>

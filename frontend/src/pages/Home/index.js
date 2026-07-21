@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../api';
 import StreamCard from '../../components/streamCard';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const categories = [
     { id: 1, name: 'Just Chatting', emoji: '💬', color: 'from-purple-500 to-indigo-600' },
@@ -23,7 +24,7 @@ const Home = () => {
                 const response = await api.get('streams/');
                 setStreams(response.data);
             } catch (error) {
-                console.error("Erro ao buscar streams:", error);
+                toast.error('Erro ao buscar streams');
             } finally {
                 setLoading(false);
             }

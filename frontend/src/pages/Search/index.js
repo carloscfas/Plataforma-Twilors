@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import api from '../../api';
 import StreamCard from '../../components/streamCard';
+import toast from 'react-hot-toast';
 
 const Search = () => {
     const [searchParams] = useSearchParams();
@@ -20,7 +21,7 @@ const Search = () => {
                 const response = await api.get(`streams/search/?q=${query}`);
                 setResults(response.data);
             } catch (error) {
-                console.error("Erro ao buscar resultados:", error);
+                toast.error('Erro ao buscar resultados');
             } finally {
                 setLoading(false);
             }

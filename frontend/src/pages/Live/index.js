@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from "react-router-dom";
 import api from '../../api';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const Live = () => {
     const { slug } = useParams();
@@ -33,7 +34,7 @@ const Live = () => {
                     setLoading(false);
                 }
             } catch (error) {
-                console.error("Erro ao buscar live:", error);
+                toast.error("Erro ao buscar live");
                 if (isMounted) setLoading(false);
             }
         };
@@ -59,14 +60,13 @@ const Live = () => {
             };
 
             socketRef.current.onclose = (e) => {
-                console.log("WebSocket desconectado. Tentando reconectar em 3 segundos...", e.reason);
                 if (isMounted) {
                     setTimeout(connectWebSocket, 3000);
                 }
             };
 
             socketRef.current.onerror = (err) => {
-                console.error("Erro no WebSocket:", err);
+                toast.error("Erro no WebSocket");
                 socketRef.current.close();
             };
         };

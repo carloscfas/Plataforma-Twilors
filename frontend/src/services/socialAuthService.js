@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
@@ -11,7 +12,7 @@ export const socialAuthService = {
             // Redireciona para o backend que fará o redirecionamento ao Google
             window.location.href = `${API_URL}/accounts/social-login/google/`;
         } catch (error) {
-            console.error('Erro ao iniciar login com Google:', error);
+            toast.error('Erro ao iniciar login com Google');
             throw error;
         }
     },
@@ -23,7 +24,7 @@ export const socialAuthService = {
         try {
             window.location.href = `${API_URL}/accounts/social-login/facebook/`;
         } catch (error) {
-            console.error('Erro ao iniciar login com Facebook:', error);
+            toast.error('Erro ao iniciar login com Facebook');
             throw error;
         }
     },
@@ -35,7 +36,7 @@ export const socialAuthService = {
         try {
             window.location.href = `${API_URL}/accounts/social-login/apple/`;
         } catch (error) {
-            console.error('Erro ao iniciar login com Apple:', error);
+            toast.error('Erro ao iniciar login com Apple');
             throw error;
         }
     },
@@ -67,7 +68,7 @@ export const socialAuthService = {
 
             return null;
         } catch (error) {
-            console.error('Erro ao processar callback OAuth:', error);
+            toast.error('Erro ao processar callback OAuth');
             throw error;
         }
     },
@@ -103,7 +104,7 @@ export const socialAuthService = {
 
             throw new Error('Token não retornado');
         } catch (error) {
-            console.error('Erro ao fazer login com OAuth:', error);
+            toast.error('Erro ao fazer login com OAuth');
             throw error;
         }
     },

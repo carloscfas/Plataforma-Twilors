@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { checkFollowStatus, followStreamer, unfollowStreamer } from '../api';
+import toast from 'react-hot-toast';
 
 const FollowButton = ({ username }) => {
     const [isFollowing, setIsFollowing] = useState(false);
@@ -16,7 +17,7 @@ const FollowButton = ({ username }) => {
                 setIsFollowing(res.data.is_following);
                 setFollowersCount(res.data.followers_count);
             } catch (err) {
-                console.error('Erro ao carregar status de follow:', err);
+                toast.error('Erro ao carregar status de follow');
             } finally {
                 setLoading(false);
             }
@@ -36,7 +37,7 @@ const FollowButton = ({ username }) => {
                 setIsFollowing(false);
                 setFollowersCount(res.data.followers_count);
             } catch (err) {
-                console.error('Erro ao deixar de seguir:', err);
+                toast.error('Erro ao deixar de seguir');
             }
         } else {
             try {
@@ -44,7 +45,7 @@ const FollowButton = ({ username }) => {
                 setIsFollowing(true);
                 setFollowersCount(res.data.followers_count);
             } catch (err) {
-                console.error('Erro ao seguir:', err);
+                toast.error('Erro ao seguir');
             }
         }
     };

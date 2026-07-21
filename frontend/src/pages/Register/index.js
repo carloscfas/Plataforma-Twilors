@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api'; // Importamos a nossa ponte com o backend
+import api from '../../api';
+import toast from 'react-hot-toast'; // Importamos a nossa ponte com o backend
 
 const Register = () => {
     const navigate = useNavigate(); // Para redirecionar o usuário depois
@@ -27,11 +28,10 @@ const Register = () => {
         try {
             // Fazemos a chamada para o endpoint que criamos no Django
             await api.post('accounts/register/', formData);
-            alert('Cadastro realizado com sucesso!');
-            navigate('/login'); // Redireciona para o Login
+            toast.success('Cadastro realizado com sucesso!');
+            navigate('/login');
         } catch (error) {
-            console.error("Erro ao cadastrar:", error.response?.data);
-            alert('Erro ao realizar cadastro. Verifique os dados.')
+            toast.error('Erro ao realizar cadastro. Verifique os dados.');
         }
     };
 

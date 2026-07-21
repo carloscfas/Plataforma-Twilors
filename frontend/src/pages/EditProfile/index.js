@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api, { getUserProfile } from '../../api';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const EditProfile = () => {
                     setBannerPreview(res.data.banner);
                 }
             } catch (err) {
-                console.error('Erro ao carregar dados:', err);
+                toast.error('Erro ao carregar dados do perfil');
                 setError('Erro ao carregar perfil');
             } finally {
                 setLoading(false);
@@ -112,7 +113,7 @@ const EditProfile = () => {
                 navigate(`/streamer/${user.username}`);
             }, 1500);
         } catch (err) {
-            console.error('Erro ao salvar:', err);
+            toast.error('Erro ao salvar perfil');
             setError(err.response?.data?.error || 'Erro ao salvar perfil');
         } finally {
             setSaving(false);

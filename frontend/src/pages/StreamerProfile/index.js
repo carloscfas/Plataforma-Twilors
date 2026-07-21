@@ -4,6 +4,7 @@ import { getStreamerProfile, getStreamerStreams } from '../../api';
 import StreamerInfo from '../../components/StreamerInfo';
 import StreamerStreams from '../../components/StreamerStreams';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const StreamerProfile = () => {
     const { username } = useParams();
@@ -29,7 +30,7 @@ const StreamerProfile = () => {
                 const streamsRes = await getStreamerStreams(username);
                 setStreams(streamsRes.data);
             } catch (err) {
-                console.error('Erro ao carregar dados do streamer:', err);
+                toast.error('Erro ao carregar dados do streamer');
                 setError(
                     err.response?.data?.error ||
                     'Erro ao carregar perfil do streamer'

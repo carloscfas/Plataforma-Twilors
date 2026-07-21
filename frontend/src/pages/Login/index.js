@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api, { getUserProfile } from '../../api';
 import SocialLoginButtons from '../../components/SocialLoginButtons';
 import socialAuthService from '../../services/socialAuthService';
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -34,11 +35,10 @@ const Login = () => {
             const userRes = await getUserProfile();
             localStorage.setItem('user', JSON.stringify(userRes.data));
 
-            alert('Login realizado com sucesso!');
-            navigate('/'); // Vai para a Home
+            toast.success('Login realizado com sucesso!');
+            navigate('/');
         } catch (error) {
-            console.error("Erro ao logar:", error.response?.data);
-            alert('Usuário ou senha incorretos.');
+            toast.error('Usuário ou senha incorretos.');
         }
     };
 
@@ -46,7 +46,7 @@ const Login = () => {
         try {
             await socialAuthService.initiateGoogleLogin();
         } catch (error) {
-            alert('Erro ao iniciar login com Google');
+            toast.error('Erro ao iniciar login com Google');
         }
     };
 
@@ -54,7 +54,7 @@ const Login = () => {
         try {
             await socialAuthService.initiateFacebookLogin();
         } catch (error) {
-            alert('Erro ao iniciar login com Facebook');
+            toast.error('Erro ao iniciar login com Facebook');
         }
     };
 
@@ -62,7 +62,7 @@ const Login = () => {
         try {
             await socialAuthService.initiateAppleLogin();
         } catch (error) {
-            alert('Erro ao iniciar login com Apple');
+            toast.error('Erro ao iniciar login com Apple');
         }
     };
 

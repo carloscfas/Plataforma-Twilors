@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -24,22 +27,22 @@ const Dashboard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
         try {
             await api.post('streams/', formData);
-            alert('Stream criada com sucesso! Você está online.');
-            navigate('/');
+            setSuccess(true);
+            setTimeout(() => {
+                navigate('/');
+            }, 1500);
         } catch (error) {
-            console.error("Erro ao criar stream:", error.response?.data);
-            
-            // Lógica Sênior: Se o erro for em campos específicos (ex: URL inválida), mostramos todos
             const backendErrors = error.response?.data;
             if (backendErrors && typeof backendErrors === 'object') {
                 const messages = Object.keys(backendErrors).map(key => {
                     return `${key}: ${backendErrors[key]}`;
                 });
-                alert("Erro na validação:\n" + messages.join("\n"));
+                setError("Erro na validação: " + messages.join(", "));
             } else {
-                alert("Erro: Verifique se você é um Streamer ou se os dados estão corretos.");
+                setError("Erro: Verifique se você é um Streamer ou se os dados estão corretos.");
             }
         } finally {
             setLoading(false);
@@ -51,6 +54,19 @@ const Dashboard = () => {
             <h1 className="text-3xl font-bold mb-6" style={{ color: colors.text.primary }}>Painel do Streamer</h1>
             <div className="p-6 rounded-lg shadow-md max-w-2xl" style={{ backgroundColor: colors.background.secondary }}>
                 <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text.primary }}>Configurar Nova Live</h2>
+                
+                {success && (
+                    <div className="mb-4 p-3 rounded-lg text-center" style={{ backgroundColor: `${colors.status.success}20`, color: colors.status.success }}>
+                        Stream criada com sucesso! Você está online.
+                    </div>
+                )}
+
+                {error && (
+                    <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: `${colors.status.error}20`, color: colors.status.error }}>
+                        {error}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block mb-2 font-medium" style={{ color: colors.text.primary }}>Título da Live</label>

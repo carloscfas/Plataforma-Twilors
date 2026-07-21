@@ -4,6 +4,7 @@ import api, { getUserProfile } from '../../api';
 import SocialLoginButtons from '../SocialLoginButtons';
 import socialAuthService from '../../services/socialAuthService';
 import colors from '../../configs/colors';
+import toast from 'react-hot-toast';
 
 const LoginForm = ({ onClose }) => {
     const navigate = useNavigate();
@@ -12,6 +13,8 @@ const LoginForm = ({ onClose }) => {
         username: '',
         password: '',
     });
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,6 +26,7 @@ const LoginForm = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
             const response = await api.post('token/', formData);
             
@@ -32,12 +36,13 @@ const LoginForm = ({ onClose }) => {
             const userRes = await getUserProfile();
             localStorage.setItem('user', JSON.stringify(userRes.data));
 
-            alert('Login realizado com sucesso!');
-            onClose();
-            navigate('/');
+            setSuccess(true);
+            setTimeout(() => {
+                onClose();
+                navigate('/');
+            }, 1000);
         } catch (error) {
-            console.error("Erro ao logar:", error.response?.data);
-            alert('Usuário ou senha incorretos.');
+            setError('Usuário ou senha incorretos.');
         }
     };
 
@@ -45,7 +50,7 @@ const LoginForm = ({ onClose }) => {
         try {
             await socialAuthService.initiateGoogleLogin();
         } catch (error) {
-            alert('Erro ao iniciar login com Google');
+            toast.error('Erro ao iniciar login com Google');
         }
     };
 
@@ -53,7 +58,7 @@ const LoginForm = ({ onClose }) => {
         try {
             await socialAuthService.initiateFacebookLogin();
         } catch (error) {
-            alert('Erro ao iniciar login com Facebook');
+            toast.error('Erro ao iniciar login com Facebook');
         }
     };
 
@@ -61,13 +66,25 @@ const LoginForm = ({ onClose }) => {
         try {
             await socialAuthService.initiateAppleLogin();
         } catch (error) {
-            alert('Erro ao iniciar login com Apple');
+            toast.error('Erro ao iniciar login com Apple');
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <h2 className="text-3xl font-bold mb-6 text-center font-sans" style={{ color: colors.text.primary }}>Entrar na Plataforma</h2>
+
+            {success && (
+                <div className="mb-4 p-3 rounded-lg text-center" style={{ backgroundColor: `${colors.status.success}20`, color: colors.status.success }}>
+                    Login realizado com sucesso!
+                </div>
+            )}
+
+            {error && (
+                <div className="mb-4 p-3 rounded-lg text-center" style={{ backgroundColor: `${colors.status.error}20`, color: colors.status.error }}>
+                    {error}
+                </div>
+            )}
 
             <div className="mb-4">
                 <label className="block text-sm font-bold mb-2" style={{ color: colors.text.primary }}>Usuário</label>
