@@ -2,10 +2,10 @@
 const colors = {
   // Cores principais - fundo escuro
   background: {
-    primary: '#0E0E10',      // Fundo principal (quase preto)
-    secondary: '#18181B',    // Fundo secundário (cinza escuro)
-    tertiary: '#1F1F23',     // Fundo terciário (cinza médio)
-    elevated: '#26262C',     // Elementos elevados
+    primary: '#141417',      // Fundo principal (quase preto)
+    secondary: '#1E1E22',    // Fundo secundário (cinza escuro)
+    tertiary: '#252529',     // Fundo terciário (cinza médio)
+    elevated: '#2C2C32',     // Elementos elevados
   },
   
   // Cores de texto
@@ -34,22 +34,22 @@ const colors = {
   
   // Cores de borda
   border: {
-    primary: '#2F2F35',      // Borda principal
-    secondary: '#3F3F46',    // Borda secundária
+    primary: '#35353B',      // Borda principal
+    secondary: '#45454C',    // Borda secundária
     focus: '#9147FF',        // Borda em foco
   },
   
   // Cores de input
   input: {
-    background: '#0E0E10',   // Fundo de input
-    border: '#2F2F35',       // Borda de input
-    placeholder: '#71717A',  // Texto placeholder
+    background: '#141417',   // Fundo de input
+    border: '#35353B',       // Borda de input
+    placeholder: '#7A7A82',  // Texto placeholder
   },
   
   // Cores de card
   card: {
-    background: '#1F1F23',   // Fundo de card
-    hover: '#26262C',        // Hover no card
+    background: '#252529',   // Fundo de card
+    hover: '#2C2C32',        // Hover no card
   },
   
   // Gradientes
