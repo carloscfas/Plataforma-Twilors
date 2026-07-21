@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import colors from '../../configs/colors';
-import toast from 'react-hot-toast';
 
 const Dashboard = () => {
     const navigate = useNavigate();

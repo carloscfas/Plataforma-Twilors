@@ -9,6 +9,7 @@ import StreamerProfile from "./pages/StreamerProfile";
 import EditProfile from "./pages/EditProfile";
 import Search from "./pages/Search";
 import AuthModal from "./components/AuthModal";
+import FollowingSidebar from "./components/FollowingSidebar";
 
 function App() {
     return (
@@ -16,14 +17,17 @@ function App() {
             <AuthProvider>
                 <div className="min-h-screen bg-bg-primary">
                     <Navbar />
-                    <Routes>
-                        <Route path="/" element={<Home />}/>
-                        <Route path="/dashboard" element={<Dashboard/>} />
-                        <Route path="/live/:slug" element={<Live />} />
-                        <Route path="/streamer/:username" element={<StreamerProfile />} />
-                        <Route path="/edit-profile" element={<EditProfile />} />
-                        <Route path="/search" element={<Search />} />
-                    </Routes>
+                    <FollowingSidebar />
+                    <div className="ml-80">
+                        <Routes>
+                            <Route path="/" element={<Home />}/>
+                            <Route path="/dashboard" element={<Dashboard/>} />
+                            <Route path="/live/:slug" element={<Live />} />
+                            <Route path="/streamer/:username" element={<StreamerProfile />} />
+                            <Route path="/edit-profile" element={<EditProfile />} />
+                            <Route path="/search" element={<Search />} />
+                        </Routes>
+                    </div>
                     <AuthModal />
                     <Toaster position="top-right" reverseOrder={false} />
                 </div>

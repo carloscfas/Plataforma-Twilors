@@ -26,7 +26,9 @@ const Navbar = () => {
 
     return (
         <nav className="bg-bg-secondary border-b border-border-primary py-3 px-6 flex justify-between items-center sticky top-0 z-50">
-            <Link to="/" className="text-2xl font-bold text-accent-primary hover:text-accent-hover transition-colors">Twilors</Link>
+            <div className="flex items-center gap-4">
+                <Link to="/" className="text-2xl font-bold text-accent-primary hover:text-accent-hover transition-colors">Twilors</Link>
+            </div>
             
             <form onSubmit={handleSearch} className="relative flex-1 max-w-xl mx-8">
                 <input

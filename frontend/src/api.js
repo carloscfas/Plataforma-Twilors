@@ -40,4 +40,8 @@ export const unfollowStreamer = (username) => {
     return api.delete(`accounts/streamer/${username}/follow/`);
 };
 
+export const getFollowingList = () => {
+    return api.get(`accounts/following/`);
+};
+
 export default api;

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import colors from '../../configs/colors';
-import toast from 'react-hot-toast';
 
 const RegisterForm = ({ onClose }) => {
-    const navigate = useNavigate();
-
     const [formData, setFormData] = useState({
         username: '',
         email: '',
