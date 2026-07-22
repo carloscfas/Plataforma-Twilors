@@ -66,7 +66,7 @@ const Live = () => {
             };
 
             socketRef.current.onerror = (err) => {
-                toast.error("Erro no WebSocket");
+                console.error("Erro no WebSocket:", err);
                 socketRef.current.close();
             };
         };

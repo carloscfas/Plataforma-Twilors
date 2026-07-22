@@ -10,6 +10,7 @@ import EditProfile from "./pages/EditProfile";
 import Search from "./pages/Search";
 import AuthModal from "./components/AuthModal";
 import FollowingSidebar from "./components/FollowingSidebar";
+import LiveCarousel from "./components/LiveCarousel";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Navbar />
                     <FollowingSidebar />
                     <div className="ml-80">
+                        <LiveCarousel />
                         <Routes>
                             <Route path="/" element={<Home />}/>
                             <Route path="/dashboard" element={<Dashboard/>} />

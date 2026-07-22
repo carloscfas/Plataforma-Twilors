@@ -14,6 +14,7 @@ class Stream(models.Model):
 
     # Metadados da Live
     is_live = models.BooleanField(default=False)
+    viewer_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -48,4 +48,8 @@ export const getAllStreamers = () => {
     return api.get(`accounts/streamers/`);
 };
 
+export const getTopLives = () => {
+    return api.get(`streams/top_lives/`);
+};
+
 export default api;

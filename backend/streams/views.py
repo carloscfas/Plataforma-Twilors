@@ -88,3 +88,29 @@ class StreamViewSet(viewsets.ModelViewSet):
             'streams': stream_serializer.data,
             'streamers': streamers_data
         }, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['GET'], permission_classes=[permissions.AllowAny])
+    def top_lives(self, request):
+        """
+        Obtém as melhores lives (prioriza lives ao vivo, depois lives recentes)
+        Ranqueamento baseado em: viewer_count + (seguidores do streamer * 0.1)
+        Retorna todas as lives disponíveis sem duplicação
+        GET /api/streams/top_lives/
+        """
+        from django.db.models import Count, F, Case, When, IntegerField
+        
+        # Buscar todas as lives com ranqueamento, priorizando lives ao vivo
+        streams = Stream.objects.all().select_related('streamer').annotate(
+            followers_count=Count('streamer__followers')
+        ).annotate(
+            popularity_score=F('viewer_count') + (F('followers_count') * 0.1)
+        ).annotate(
+            live_priority=Case(
+                When(is_live=True, then=1),
+                default=0,
+                output_field=IntegerField()
+            )
+        ).order_by('-live_priority', '-popularity_score', '-created_at')
+        
+        serializer = self.get_serializer(streams, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
