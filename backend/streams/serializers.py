@@ -8,9 +8,9 @@ class StreamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stream
-        # Listamos todos os campos que queremos que o JSON tenha
-        fields = ('id', 'streamer', 'streamer_username', 'streamer_followers_count', 'title', 'description', 'slug', 'is_live', 'viewer_count', 'created_at', 'updated_at', 'thumbnail', 'video_url')
-        # Campos que o usuário não pode enviar no POST/PUT manualmente (ou que exigem upload específico)
+        fields = ('id', 'streamer', 'streamer_username', 'streamer_followers_count',
+                  'title', 'description', 'slug', 'is_live', 'viewer_count',
+                  'created_at', 'updated_at', 'thumbnail', 'video_url')
         read_only_fields = ('streamer', 'slug', 'created_at', 'updated_at', 'thumbnail', 'viewer_count')
 
     def get_streamer_followers_count(self, obj):

@@ -7,6 +7,8 @@ import 'swiper/css/navigation';
 import { getTopLives } from '../api';
 import colors from '../configs/colors';
 
+const YOUTUBE_REGEX = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+
 const LiveCarousel = () => {
     const [lives, setLives] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,9 +29,8 @@ const LiveCarousel = () => {
 
     const getYouTubeThumbnail = (url) => {
         if (!url) return null;
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        const videoId = (match && match[2].length === 11) ? match[2] : null;
+        const match = url.match(YOUTUBE_REGEX);
+        const videoId = match && match[2].length === 11 ? match[2] : null;
         return videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : null;
     };
 
@@ -43,9 +44,7 @@ const LiveCarousel = () => {
         );
     }
 
-    if (lives.length === 0) {
-        return null;
-    }
+    if (lives.length === 0) return null;
 
     return (
         <div className="px-6 py-4" style={{ backgroundColor: colors.background.secondary }}>
@@ -83,45 +82,39 @@ const LiveCarousel = () => {
                     nextEl: '.swiper-button-next-custom',
                     prevEl: '.swiper-button-prev-custom',
                 }}
-                grabCursor={true}
+                grabCursor
                 className="mySwiper"
             >
-                {lives.map((live) => {
-                    const thumbnail = getYouTubeThumbnail(live.video_url);
-                    return (
-                        <SwiperSlide key={live.id}>
-                            <Link
-                                to={`/live/${live.slug}`}
-                                className="group cursor-pointer block"
-                            >
-                                <div className="relative aspect-video rounded-lg overflow-hidden mb-2">
-                                    {thumbnail ? (
-                                        <img
-                                            src={thumbnail}
-                                            alt={live.title}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: colors.background.tertiary }}>
-                                            <span className="text-sm" style={{ color: colors.text.muted }}>Sem thumbnail</span>
-                                        </div>
-                                    )}
-                                    {live.is_live && (
-                                        <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded font-bold animate-pulse">
-                                            AO VIVO
-                                        </div>
-                                    )}
-                                </div>
-                                <h3 className="font-semibold text-sm truncate" style={{ color: colors.text.primary }}>
-                                    {live.title}
-                                </h3>
-                                <p className="text-xs" style={{ color: colors.text.secondary }}>
-                                    @{live.streamer_username}
-                                </p>
-                            </Link>
-                        </SwiperSlide>
-                    );
-                })}
+                {lives.map((live) => (
+                    <SwiperSlide key={live.id}>
+                        <Link to={`/live/${live.slug}`} className="group cursor-pointer block">
+                            <div className="relative aspect-video rounded-lg overflow-hidden mb-2">
+                                {getYouTubeThumbnail(live.video_url) ? (
+                                    <img
+                                        src={getYouTubeThumbnail(live.video_url)}
+                                        alt={live.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: colors.background.tertiary }}>
+                                        <span className="text-sm" style={{ color: colors.text.muted }}>Sem thumbnail</span>
+                                    </div>
+                                )}
+                                {live.is_live && (
+                                    <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded font-bold animate-pulse">
+                                        AO VIVO
+                                    </div>
+                                )}
+                            </div>
+                            <h3 className="font-semibold text-sm truncate" style={{ color: colors.text.primary }}>
+                                {live.title}
+                            </h3>
+                            <p className="text-xs" style={{ color: colors.text.secondary }}>
+                                @{live.streamer_username}
+                            </p>
+                        </Link>
+                    </SwiperSlide>
+                ))}
             </Swiper>
         </div>
     );
