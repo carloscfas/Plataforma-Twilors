@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import UserMenu from './UserMenu';
 
-// Regra para quando a pessoa não tiver token logado
 const Navbar = () => {
     const navigate = useNavigate();
     const { openLoginModal, openRegisterModal } = useAuth();
@@ -10,12 +10,6 @@ const Navbar = () => {
     const token = localStorage.getItem('access_token');
     const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
 
-    const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('user');
-        navigate('/');
-    };
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -52,21 +46,7 @@ const Navbar = () => {
                 {token ? (
                     <>
                         <Link to="/" className="text-text-secondary hover:text-accent-primary font-medium transition-colors">Explorar</Link>
-                        <Link to="/dashboard" className="text-text-secondary hover:text-accent-primary font-medium transition-colors">Criar Live</Link>
-                        {user?.is_streamer && (
-                            <Link 
-                                to={`/streamer/${user.username}`}
-                                className="text-text-secondary hover:text-accent-primary font-medium flex items-center gap-1 transition-colors"
-                            >
-                                <span>👤</span>Perfil
-                            </Link>
-                        )}
-                        <button 
-                            onClick={handleLogout}
-                            className="bg-status-error text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-                        >
-                            Sair
-                        </button>
+                        <UserMenu user={user} />
                     </>
                 ) : (
                     <>
