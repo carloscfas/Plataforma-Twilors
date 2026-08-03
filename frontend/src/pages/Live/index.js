@@ -3,17 +3,21 @@ import { useParams } from "react-router-dom";
 import api from '../../api';
 import colors from '../../configs/colors';
 import toast from 'react-hot-toast';
+import Hls from 'hls.js';
 
 const Live = () => {
     const { slug } = useParams();
     const [stream, setStream] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isStreamer, setIsStreamer] = useState(false);
 
     // Estados do Chat
     const [messages, setMessages] = useState([]);
     const [chatInput, setChatInput] = useState("");
     const socketRef = useRef(null);
     const chatEndRef = useRef(null);
+    const videoRef = useRef(null);
+    const hlsRef = useRef(null);
 
     // Scroll automático para a última mensagem
     const scrollToBottom = () => {
@@ -26,12 +30,21 @@ const Live = () => {
 
     useEffect(() => {
         let isMounted = true;
+        
         const fetchStream = async () => {
             try {
                 const response = await api.get(`/streams/${slug}/`);
                 if (isMounted) {
                     setStream(response.data);
                     setLoading(false);
+                    
+                    // Verificar se usuário atual é o streamer
+                    try {
+                        const userProfile = await api.get('accounts/profile/');
+                        setIsStreamer(userProfile.data.id === response.data.streamer);
+                    } catch (error) {
+                        setIsStreamer(false);
+                    }
                 }
             } catch (error) {
                 toast.error("Erro ao buscar live");
@@ -78,8 +91,55 @@ const Live = () => {
             if (socketRef.current) {
                 socketRef.current.close();
             }
+            if (hlsRef.current) {
+                hlsRef.current.destroy();
+            }
         };
     }, [slug]);
+
+    // Configurar HLS player quando stream for carregado
+    useEffect(() => {
+        if (stream && stream.stream_type === 'rtmp' && videoRef.current) {
+            const hlsUrl = `http://localhost:8080/hls/${stream.rtmp_key}.m3u8`;
+            
+            if (Hls.isSupported()) {
+                if (hlsRef.current) {
+                    hlsRef.current.destroy();
+                }
+                
+                const hls = new Hls();
+                hls.loadSource(hlsUrl);
+                hls.attachMedia(videoRef.current);
+                
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    videoRef.current.play().catch(console.error);
+                });
+                
+                hls.on(Hls.Events.ERROR, (event, data) => {
+                    if (data.fatal) {
+                        switch (data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                hls.destroy();
+                                break;
+                        }
+                    }
+                });
+                
+                hlsRef.current = hls;
+            } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+                videoRef.current.src = hlsUrl;
+                videoRef.current.addEventListener('loadedmetadata', () => {
+                    videoRef.current.play().catch(console.error);
+                });
+            }
+        }
+    }, [stream]);
 
     const sendMessage = (e) => {
         e.preventDefault();
@@ -94,36 +154,29 @@ const Live = () => {
     if (loading) return <div className="p-8 text-center" style={{ color: colors.text.primary }}>Carregando...</div>;
     if (!stream) return <div className="p-8 text-center" style={{ color: colors.status.error }}>Live não encontrada.</div>;
 
-    const getYouTubeEmbedUrl = (url) => {
-        if (!url) return null;
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        const videoId = (match && match[2].length === 11) ? match[2] : null;
-        return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-    };
-
-    const embedUrl = getYouTubeEmbedUrl(stream.video_url);
-
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col lg:flex-row gap-6">
                 
                 {/* LADO ESQUERDO: PLAYER E INFO */}
                 <div className="flex-1">
-                    <div className="bg-black aspect-video w-full rounded-lg shadow-2xl overflow-hidden">
-                        {embedUrl ? (
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                src={embedUrl}
-                                title="YouTube video player"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                            ></iframe>
-                        ) : (
-                            <div className="flex items-center justify-center h-full text-white">
-                                Formato de URL inválido ou inexistente.
+                    <div className="bg-black aspect-video w-full rounded-lg shadow-2xl overflow-hidden relative">
+                        {/* Player HLS */}
+                        <video
+                            ref={videoRef}
+                            controls
+                            autoPlay
+                            playsInline
+                            className="w-full h-full object-contain"
+                        />
+
+                        {/* Mensagem quando stream não está ao vivo */}
+                        {!stream.is_live && (
+                            <div className="flex items-center justify-center h-full text-white absolute inset-0 bg-black bg-opacity-75">
+                                <div className="text-center">
+                                    <p className="text-xl mb-2">Stream offline</p>
+                                    <p className="text-sm text-gray-400">Aguardando streamer iniciar transmissão via OBS/Streamlabs</p>
+                                </div>
                             </div>
                         )}
                     </div>
@@ -135,6 +188,23 @@ const Live = () => {
                         <div className="leading-relaxed" style={{ color: colors.text.secondary }}>
                             {stream.description || "Nenhuma descrição fornecida para esta live."}
                         </div>
+                        
+                        {/* Informações RTMP para streamer */}
+                        {isStreamer && stream.stream_type === 'rtmp' && (
+                            <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: colors.background.tertiary }}>
+                                <h3 className="font-bold mb-2" style={{ color: colors.text.primary }}>Configurações OBS/Streamlabs</h3>
+                                <div className="space-y-2 text-sm">
+                                    <div>
+                                        <span className="font-semibold" style={{ color: colors.text.secondary }}>Server:</span>
+                                        <code className="ml-2 p-1 rounded" style={{ backgroundColor: colors.input.background }}>rtmp://localhost:1935/live</code>
+                                    </div>
+                                    <div>
+                                        <span className="font-semibold" style={{ color: colors.text.secondary }}>Stream Key:</span>
+                                        <code className="ml-2 p-1 rounded" style={{ backgroundColor: colors.input.background }}>{stream.rtmp_key}</code>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

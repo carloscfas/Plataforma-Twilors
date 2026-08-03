@@ -5,6 +5,9 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import secrets
 from .models import Stream
 from .serializers import StreamSerializer
 from .permissions import IsStreamerOrReadOnly
@@ -71,3 +74,23 @@ class StreamViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(streams, many=True)
         return Response(serializer.data)
+
+
+@csrf_exempt
+def rtmp_auth(request):
+    """
+    Endpoint para autenticação RTMP via nginx-rtmp
+    Verifica se o stream_key é válido
+    """
+    stream_key = request.GET.get('name')
+    
+    if not stream_key:
+        return HttpResponse('404 Stream key not found', status=404)
+    
+    try:
+        stream = Stream.objects.get(rtmp_key=stream_key, stream_type='rtmp')
+        stream.is_live = True
+        stream.save()
+        return HttpResponse('200 OK', status=200)
+    except Stream.DoesNotExist:
+        return HttpResponse('404 Stream not found', status=404)

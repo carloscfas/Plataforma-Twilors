@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import StreamViewSet
+from .views import StreamViewSet, rtmp_auth
 
 # Criamos o roteador
 router = DefaultRouter()
@@ -11,4 +11,5 @@ router.register(r'streams', StreamViewSet, basename='stream')
 # Incluímos as rotas geradas pelo roteador nas urlpatterns no Django
 urlpatterns = [
     path('', include(router.urls)),
+    path('streams/rtmp-auth/', rtmp_auth),
 ]

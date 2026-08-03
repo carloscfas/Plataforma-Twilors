@@ -8,10 +8,11 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const [createdStream, setCreatedStream] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        video_url: '',
+        stream_type: 'rtmp',
         thumbnail: ''
     });
 
@@ -28,11 +29,9 @@ const Dashboard = () => {
         setLoading(true);
         setError('');
         try {
-            await api.post('streams/', formData);
+            const response = await api.post('streams/', formData);
+            setCreatedStream(response.data);
             setSuccess(true);
-            setTimeout(() => {
-                navigate('/');
-            }, 1500);
         } catch (error) {
             const backendErrors = error.response?.data;
             if (backendErrors && typeof backendErrors === 'object') {
@@ -101,9 +100,9 @@ const Dashboard = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-2 font-medium" style={{ color: colors.text.primary }}>URL do Vídeo (YouTube Link)</label>
-                        <input 
-                            name="video_url" 
+                        <label className="block mb-2 font-medium" style={{ color: colors.text.primary }}>Tipo de Transmissão</label>
+                        <select 
+                            name="stream_type" 
                             className="w-full p-3 border rounded focus:ring-2 outline-none transition-all"
                             style={{
                                 backgroundColor: colors.input.background,
@@ -113,8 +112,11 @@ const Dashboard = () => {
                                 '--tw-ring-offset-color': colors.input.background
                             }}
                             onChange={handleChange} 
-                            placeholder="https://www.youtube.com/watch?v=..."
-                        />
+                            value={formData.stream_type}
+                        >
+                            <option value="rtmp">RTMP (OBS/Streamlabs)</option>
+                            <option value="youtube">YouTube</option>
+                        </select>
                     </div>
                     <button 
                         type="submit"
@@ -128,6 +130,32 @@ const Dashboard = () => {
                         {loading ? 'Iniciando...' : 'Iniciar Transmissão'}
                     </button>
                 </form>
+
+                {/* RTMP Configuration Display */}
+                {success && createdStream && createdStream.stream_type === 'rtmp' && (
+                    <div className="mt-6 p-4 rounded-lg" style={{ backgroundColor: colors.background.tertiary }}>
+                        <h3 className="font-bold mb-3" style={{ color: colors.text.primary }}>Configurações OBS/Streamlabs</h3>
+                        <div className="space-y-3 text-sm">
+                            <div>
+                                <span className="font-semibold block mb-1" style={{ color: colors.text.secondary }}>Server:</span>
+                                <code className="block p-2 rounded w-full break-all" style={{ backgroundColor: colors.input.background }}>rtmp://localhost:1935/live</code>
+                            </div>
+                            <div>
+                                <span className="font-semibold block mb-1" style={{ color: colors.text.secondary }}>Stream Key:</span>
+                                <code className="block p-2 rounded w-full break-all" style={{ backgroundColor: colors.input.background }}>{createdStream.rtmp_key}</code>
+                            </div>
+                            <div className="pt-2">
+                                <button 
+                                    onClick={() => navigate(`/live/${createdStream.slug}`)}
+                                    className="px-4 py-2 rounded text-white font-semibold transition"
+                                    style={{ backgroundColor: colors.accent.primary }}
+                                >
+                                    Ir para Live
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

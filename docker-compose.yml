@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Banco de Dados Cache/Websocket (Redis)
   redis:
@@ -23,6 +21,18 @@ services:
     depends_on:
       - redis
 
+  # RTMP Server (nginx-rtmp + FFmpeg)
+  rtmp:
+    build: ./rtmp
+    container_name: twilors_rtmp
+    ports:
+      - "1935:1935"  # RTMP
+      - "8080:80"    # HLS
+    volumes:
+      - ./rtmp/hls:/tmp/hls
+    depends_on:
+      - backend
+
   # Frontend (React)
   frontend:
     build: ./frontend
@@ -33,7 +43,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - CHOKIDAR_USEPOLLING=true # Necessário para hot-reload funcionar bem em alguns ambientes Docker
-    stdin_open: true # Permite interação se necessário
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
     depends_on:
       - backend
+      - rtmp

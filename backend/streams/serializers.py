@@ -10,8 +10,8 @@ class StreamSerializer(serializers.ModelSerializer):
         model = Stream
         fields = ('id', 'streamer', 'streamer_username', 'streamer_followers_count',
                   'title', 'description', 'slug', 'is_live', 'viewer_count',
-                  'created_at', 'updated_at', 'thumbnail', 'video_url')
-        read_only_fields = ('streamer', 'slug', 'created_at', 'updated_at', 'thumbnail', 'viewer_count')
+                  'created_at', 'updated_at', 'thumbnail', 'video_url', 'stream_type', 'rtmp_key')
+        read_only_fields = ('streamer', 'slug', 'created_at', 'updated_at', 'thumbnail', 'viewer_count', 'rtmp_key')
 
     def get_streamer_followers_count(self, obj):
         return obj.streamer.followers.count()
